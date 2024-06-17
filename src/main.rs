@@ -24,7 +24,8 @@ fn parse_args(input: String) -> Result<Vec<String>, std::io::Error> {
 fn handle_command(args: Vec<String>) {
     if let Some(command) = args.first() {
         match command.as_str() {
-            "exit" => commands::handle_exit(args), 
+            "exit" => commands::handle_exit(args),
+            "echo" => commands::handle_echo(args),
             other => println!("{}: command not found", other),
         }
     }

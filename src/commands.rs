@@ -9,3 +9,15 @@ pub fn handle_exit(args: Vec<String>) {
         std::process::exit(0);
     }
 }
+
+// The echo command, it prints anything typed inside it.
+pub fn handle_echo(args: Vec<String>) {
+    let message: String = args
+        .iter()
+        .skip(1)
+        .map(|s| s.as_str())
+        .collect::<Vec<&str>>()
+        .join(" ");
+
+    println!("{}", message);
+}
