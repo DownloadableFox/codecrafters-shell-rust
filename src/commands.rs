@@ -20,7 +20,7 @@ pub fn handle_exec(args: Vec<String>) {
             match output {
                 Ok(output) => {
                     let to_print = String::from_utf8_lossy(&output.stdout);
-                    println!("{}", to_print);
+                    print!("{}", to_print);
                 }
                 Err(e) => println!("lsh: error while executing \"{}\"", e)
             }
