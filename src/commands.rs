@@ -1,4 +1,34 @@
+use std::process::{Command, Stdio};
+
 use crate::internal;
+
+// Not really a command, but it works as a call to execute an external executable
+pub fn handle_exec(args: Vec<String>) {
+    if let Some(executable) = args.get(0) {
+        if let Ok(path) = internal::find_executable(executable) {
+            let int_args = args
+                .iter()
+                .skip(1)
+                .map(|a| a.as_str())
+                .collect::<Vec<&str>>();
+
+            let output = Command::new(path)
+                .args(int_args)
+                .stdout(Stdio::piped())
+                .output();
+
+            match output {
+                Ok(output) => {
+                    let to_print = String::from_utf8_lossy(&output.stdout);
+                    println!("{}", to_print);
+                }
+                Err(e) => println!("lsh: error while executing \"{}\"", e)
+            }
+        } else {
+            println!("{}: command not found", executable)
+        }
+    }
+}
 
 // Type command, checks whether a given command is a builtin or an exec.
 pub fn handle_type(args: Vec<String>) {
