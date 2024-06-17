@@ -26,6 +26,7 @@ fn handle_command(args: Vec<String>) {
         match command.as_str() {
             "exit" => commands::handle_exit(args),
             "echo" => commands::handle_echo(args),
+            "type" => commands::handle_type(args),
             other => println!("{}: command not found", other),
         }
     }
