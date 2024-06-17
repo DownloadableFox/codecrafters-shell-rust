@@ -1,3 +1,5 @@
+use crate::internal;
+
 // Type command, checks whether a given command is a builtin or an exec.
 pub fn handle_type(args: Vec<String>) {
     let built_in = ["echo", "exit", "type"];
@@ -10,6 +12,8 @@ pub fn handle_type(args: Vec<String>) {
 
         if found {
             println!("{} is a shell builtin", command);
+        } else if let Ok(dir) = internal::find_executable(command) {
+            println!("{} is {}", command, dir);            
         } else {
             println!("{}: not found", command);
         }

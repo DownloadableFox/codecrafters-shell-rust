@@ -1,4 +1,5 @@
 mod commands;
+mod internal;
 
 use std::io::{self, Write};
 
