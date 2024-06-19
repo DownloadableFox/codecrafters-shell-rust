@@ -1,5 +1,6 @@
 mod commands;
 mod internal;
+mod pathutils;
 
 use std::io::{self, Write};
 

@@ -1,6 +1,6 @@
 use std::path::Path;
 
-use crate::internal::{self, CommandContext};
+use crate::{internal::{self, CommandContext}, pathutils};
 
 // Type command, checks whether a given command is a builtin or an exec.
 pub fn handle_type(ctx: &mut CommandContext)-> i32 {
@@ -48,7 +48,17 @@ pub fn handle_cd(ctx: &mut CommandContext) -> i32 {
         }
     }
 
-    let path = Path::new(&directory);
+    let mut path;
+    match directory.chars().nth(0) { 
+        Some('/') => path = Path::new(&directory).to_path_buf(),
+        _ => {
+            let current = ctx.get_env().pwd();
+            let not_sanitized = current.join(&directory);
+            path = Path::new(&not_sanitized).to_path_buf();
+        },
+    }
+
+    path = pathutils::sanitize(&path);
 
     if path.exists() {
         ctx.get_env().cd(path.to_path_buf());
