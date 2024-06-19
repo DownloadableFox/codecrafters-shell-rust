@@ -15,7 +15,7 @@ pub fn handle_type(ctx: &mut CommandContext)-> i32 {
 
     match ctx.get_env().find_command(&cmd) {
         internal::CommandType::BuiltIn(name) => {
-            _ = writeln!(ctx.get_writer(), "{} is {}", cmd, name);
+            _ = writeln!(ctx.get_writer(), "{} is a shell builtin", name);
             0
         }
         internal::CommandType::Executable(path) => {
