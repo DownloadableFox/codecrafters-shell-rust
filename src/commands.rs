@@ -39,7 +39,7 @@ pub fn handle_pwd(ctx: &mut CommandContext) -> i32 {
 
 // Changes the current directory
 pub fn handle_cd(ctx: &mut CommandContext) -> i32 {
-    let directory;
+    let mut directory;
     match ctx.get_args().get(0) {
         Some(d) => directory = d.clone(),
         None => {
@@ -51,6 +51,14 @@ pub fn handle_cd(ctx: &mut CommandContext) -> i32 {
     let mut path;
     match directory.chars().nth(0) { 
         Some('/') => path = Path::new(&directory).to_path_buf(),
+        Some('~') => {
+            if let Ok(home_path) = std::env::var("HOME") {
+                directory = directory.trim_start_matches("~").to_string();
+                directory.insert_str(0, &home_path); // push front home_path
+            }
+            
+            path = Path::new(&directory).to_path_buf();
+        },
         _ => {
             let current = ctx.get_env().pwd();
             let not_sanitized = current.join(&directory);
