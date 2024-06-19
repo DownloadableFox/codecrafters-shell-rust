@@ -41,6 +41,7 @@ pub enum CommandType {
     Unknown
 }
 
+#[allow(dead_code)]
 impl ShellEnvironment {
     pub fn new(working_dir: PathBuf) -> ShellEnvironment {
         ShellEnvironment {
