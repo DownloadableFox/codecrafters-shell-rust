@@ -1,3 +1,5 @@
+use std::path::Path;
+
 use crate::internal::{self, CommandContext};
 
 // Type command, checks whether a given command is a builtin or an exec.
@@ -33,6 +35,28 @@ pub fn handle_pwd(ctx: &mut CommandContext) -> i32 {
     _ = writeln!(ctx.get_writer(), "{}", path);
 
     0
+}
+
+// Changes the current directory
+pub fn handle_cd(ctx: &mut CommandContext) -> i32 {
+    let directory;
+    match ctx.get_args().get(0) {
+        Some(d) => directory = d.clone(),
+        None => {
+            _ = writeln!(ctx.get_writer(), "cd: expected directory argument");
+            return 1;
+        }
+    }
+
+    let path = Path::new(&directory);
+
+    if path.exists() {
+        ctx.get_env().cd(path.to_path_buf());
+        0
+    } else {
+        _ = writeln!(ctx.get_writer(), "cd: {}: No such file or directory", directory);
+        1
+    }
 }
 
 // The echo command, it prints anything typed inside it.

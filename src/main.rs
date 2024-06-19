@@ -44,6 +44,7 @@ fn initialize_shell(shell: &mut ShellEnvironment) {
     shell.register_command("echo", commands::handle_echo as ShellCommand);
     shell.register_command("type", commands::handle_type as ShellCommand);
     shell.register_command("pwd", commands::handle_pwd as ShellCommand);
+    shell.register_command("cd", commands::handle_cd as ShellCommand);
 }
 
 fn main() {
